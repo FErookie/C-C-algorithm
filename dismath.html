@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <input id="content">
+        <button id="submit" style="height: 40px"></button>
+    </div>
+    <div></div>
+    <div></div>
+</body>
+//因为使用了cdn清在联网状态下使用
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        //准备工作(查找索引) 方便我们使用数组进行操作（主要是数组中的删除操作）
+        function getIndex(arr , char) {
+            for(let i = 0 ; i < arr.length ; i++){
+                if(arr[i] === char){
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        //得到用户输入框中的数据
+        function getString(){
+            let content = $('#content').val();
+            console.log(content);
+            return content;
+
+        };
+
+        // 将字符串拆分成数组
+        function anayl(sElement){
+            let stringArray = sElement.split('');
+            return stringArray;
+        };
+
+        //通过现在有多少个字母确定我们要使用的二进制数（一个十进制数tostring（2）造成的结果）
+        function getValueTobit(number) {
+             let bitValue = number.toString(2);
+             return bitValue;
+        };
+
+        //通过分析字符串确定有几个不同的变量
+        function getVal_number(arr) {
+            let arrTable = {},arrData = [];
+            for (let i = 0; i < arr.length; i++) {
+                if( !arrTable[ arr[i] ]){
+                    arrTable[ arr[i] ] = true;
+                    arrData.push(arr[i])
+                }
+            }
+            let length = arrData.length;
+            for(let element of arrData){
+                if(element === '|' || element === '&' || element === '！'){
+                    length --;
+                }
+            }
+            return length;
+        };
+
+        //分析字符串来返回变量名
+        function get_val(arr) {
+            let arrTable = {},arrData = [];
+            for (let i = 0; i < arr.length; i++) {
+                if( !arrTable[ arr[i] ]){
+                    arrTable[ arr[i] ] = true;
+                    arrData.push(arr[i])
+                }
+            }
+
+            return arrData;
+        }
+
+        //设置真值
+        function setValue(number_val) {
+            let length = number_val.toString().length;
+            let number_arr = number_val.toString().split('');
+            let result_arr = [];
+            let result_string = "";
+            let charLength = getVal_number(anayl(getString()));
+
+            if(length < charLength){
+                var count = charLength - length;
+            }
+            //console.log(result_arr);
+            for(let i = 0 ; i < count ; i++){
+                result_arr.push('0');
+            }
+            console.log(result_arr);
+            for(let i = 0 ; i < number_arr.length ; i++){
+                result_arr.push(number_arr[i]);
+            }
+            let srcString = anayl(getString());
+            let valString = (get_val(anayl(getString())));
+            console.log(valString);
+            let index1 = getIndex(valString , '|');
+            if(index1 != -1) {
+                valString.splice(index1, 1);
+            }
+            let index2 = getIndex(valString , '&');
+            if(index2 != -1) {
+                valString.splice(index2, 1);
+            }
+            let index3 = getIndex(valString , '!');
+            if(index3 != -1) {
+                valString.splice(index3, 1);
+
+            }
+            console.log(valString);
+            console.log(result_arr);
+            for(let i = 0 ; i < srcString.length ; i++){
+                for(let j = 0 ; j < valString.length ; j++ ) {
+                    if (srcString[i] == valString[j]) {
+                        srcString[i] =  result_arr[i];//这里出现了undefined??????
+                    }
+                }
+                result_string += srcString[i];
+            }
+            console.log(srcString);
+            return result_string;
+        };
+
+
+        //通过eval函数确定string对应的结果
+        function getResult(string) {
+            return eval(string);
+        }
+
+        //设置结果在浏览器上的显示
+        function setDiv() {
+
+        }
+
+        //主函数
+        function __main() {
+            let content = getString();
+            console.log(content);
+            let stringArray = anayl(content);
+            console.log(stringArray);
+            console.log(getVal_number(stringArray));
+            let needlength = getVal_number(stringArray);
+            needlength = Math.pow(2 , needlength) - 1;
+            console.log(needlength);
+            console.log((getValueTobit(needlength)));
+            console.log(setValue((getValueTobit(needlength))));
+            let result = [];
+            for(let i = needlength ; i > 0 ; i--){
+                if(getResult(setValue(getValueTobit(i))) === 1){
+                    result.push(i);
+                }
+            }
+            console.log(result);
+        };
+
+        //设置触发条件
+        $('#submit').click(function () {
+            __main();
+        });
+
+
+    })
+</script>
+</html>
