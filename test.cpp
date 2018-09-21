@@ -1,110 +1,159 @@
 #include <iostream>
+#include <stdio.h>
 using namespace std;
-class Node
-{
-    friend class List;//把List声明为友类，好在List类中容易访问Node的私有成员。
-private:
-    char Data;
-    Node* next;
-} ;//节点有两个数据成员，数据域的字符类型的 Data,以及指向下一个节点的指针域 next。
 
-class List
-{
-    Node* first;//第一个节点的指针
-    Node* end;//最后一个节点的指针。。。这一个数据成员可有可无，我用来记录最后一个节点的指针，添加新元素将会很快。
+class node{
+    friend class myList;
 public:
-    //构造函数
-    List()
-    {
-        first=nullptr;
-        end=nullptr;
+    node(){
+        next = NULL;
+        val = 0;
     }
-    /*添加元素*/
-    Node* push_back(char p_back)
-    {
-        Node* a=new Node;
-        a->Data=p_back;
-        a->next=nullptr;
-        if(a!=nullptr)
-        {
-            if (!first) //添加时是第一个节点的情况
-            {
-                first=a;
-                end=a;
-            }
-            end->next=a;//已添加的最后一个节点的next指针赋值新添加的节点地址
-            end=a;//end赋新的节点的地址。
-
-            return end;
-        }
-    }
-    /*显示链表中的各个元素*/
-    void print()
-    {
-        Node* h=first;
-        if (!h)
-        {
-            cout<<"空链表"<<endl;
-        }
-        else
-        {
-            while (h)
-            {
-                cout<<h->Data<<" ";
-                h=h->next;
-            }
-        }
-    }
-    /*链表元素计数*/
-    long count()
-    {
-        long acount=0;
-        Node* start=first;
-        while (start) {
-            acount++;
-            start=start->next;
-        }
-        return acount;
-    }
-    /*链表逆序*/
-    void reverse()
-    {
-        //尾指针指向first
-        end=first;
-        //第一个节点指针域设为Null ，为逆序链表的尾节点,在这之前需要找到下一个节点
-        Node* behind=first;//这个指针要做为下一个节点的next域。
-        Node* pre=first->next;//当前第一个节点的的next域，靠它寻找第二个节点
-        first->next=nullptr;//第一个节点变为尾节点
-        first=pre;//first指向第二个节点
-        while (first->next!=nullptr)
-        {
-            pre=first->next;//用于对first赋值
-            first->next=behind;
-            behind=first;
-            first=pre;//first指向第二个节点
-        }
-        //还得执行最后一步
-        first->next=behind;
-    }
+private:
+    node * next;
+    int val;
 };
 
+class myList{
+private:
+    node *head;
+    node *tail;
+public:
+    myList();
+    ~myList();
+    void addItem(int x);
+    void show();
+    void deleteItem(int position);
+    void insertItem(int x , int position);
+    void modifyItem(int x , int target);
+    int findItem(int x);
+    int indexof(int x);
+};
 
+myList::myList(){
+    head = tail = new node();
+}
 
-int main(int argc, const char * argv[])
+myList::~myList(){
+	node *tempptr;
+	while(head->next!=NULL)
+	{
+		tempptr=head->next;
+		delete head;
+		head=tempptr;
+	}
+	delete head;
+
+}
+
+void myList::addItem(int x){
+    node * temp = new node();
+    temp -> val = x;
+    temp -> next = NULL;
+    if(temp){
+
+        tail -> next = temp;
+        tail = temp;
+    }else{
+        cout << "内存申请失败" << endl;
+    }
+}
+
+void myList::show(){
+    node * temp = head -> next;
+    while(temp){
+        cout << temp -> val << "," << endl;
+        temp = temp -> next;
+    }
+    delete temp;
+}
+
+int myList::findItem(int x){
+    node * temptr = head -> next;
+    while(temptr != nullptr){
+        if(temptr -> val == x){
+            return temptr -> val;
+        }
+        temptr = temptr -> next;
+    }
+    if(temptr == nullptr){
+        return 999;
+    }
+}
+
+int myList::indexof(int x){
+    node * temp = head -> next;
+    int count = 0;
+    while(temp){
+        if(temp -> val == x){
+            return count + 1; //这样不是从０开始的
+        }
+        temp = temp -> next;
+        count++;
+    }
+    return -1;
+}
+
+void myList::insertItem(int x , int position){
+    node * temp = head;
+    int count = 0;
+    while(temp){
+        if(position == count + 1){
+            break;
+        }
+        count ++;
+        temp = temp -> next;
+    }
+    node * temp2 = temp -> next;
+    node * temp_node = new node();
+    temp_node -> val = x;
+    temp -> next = temp_node;
+    temp_node -> next = temp2;
+}
+void myList::deleteItem(int position){
+    node * temp = head;
+    int count = 0;
+    while(temp){
+        if(position == count + 1){
+            break;
+        }
+        count ++;
+        temp = temp -> next;
+    }
+    node * temp2 = temp -> next;
+    temp -> next = temp -> next -> next;
+    delete temp2;
+}
+
+void myList::modifyItem(int x , int target){
+    node * temptr = head -> next;
+    while(temptr != nullptr){
+        if(temptr -> val == target){
+            temptr -> val = x;
+        }
+        temptr = temptr -> next;
+    }
+    if(temptr == nullptr){
+        return;
+    }
+}
+int main()
 {
-
-    List  a;
-    a.push_back('h');
-    a.push_back('e');
-    a.push_back('l');
-    a.print();
-    cout<<endl;
-    cout<<"该链表有:"<<a.count()<<"个元素。"<<endl;
-    cout<<endl;
-    cout<<"链表逆序之后输出:"<<endl;
-    a.reverse();
-    a.print();
-    cout<<endl;
-    cout<<"该链表有:"<<a.count()<<"个元素。"<<endl;
+    myList list;
+    list.addItem(1);
+    list.addItem(2);
+    list.addItem(29);
+    list.show();
+    cout << "******************************" << endl;
+    list.insertItem(26 , 2);
+    list.show();
+    cout << "******************************" << endl;
+    list.deleteItem(2);
+    list.show();
+    cout << "******************************" << endl;
+    list.modifyItem(12 , 2);
+    list.show();
+    cout << "******************************" << endl;
+    cout << "Hello world!" << endl;
     return 0;
 }
