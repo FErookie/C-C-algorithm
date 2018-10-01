@@ -1,0 +1,227 @@
+#include<iostream>
+using namespace std;
+//C++实现无头节点链表
+class Node
+{
+public:
+	Node(int v) :m_value(v), m_next(NULL) {}
+	Node() :m_next(NULL) {}
+	int m_value;
+	Node *m_next;
+};
+class List
+{
+public:
+	List() :m_pHead(NULL), m_pTail(NULL) {}
+	~List() { Clear(); }
+	void InsertHead(int v);//头插
+	void InsertTail(int v);//尾插
+	void InsertIvalue(int i, int v);//按位置插入
+	void DeleteHead();//头删
+	void DeleteTail();//尾删
+	void DeleteIvalue(int i);//按值删除
+	Node *GetIP(int i);//获取链表中某个节点中的值是链表中的第几个
+	int GetLength();//求长度
+	void Print();//打印函数
+	bool IsEmpty() { return m_pHead == NULL ? true : false; }//判空
+	void Sort();//排序
+	void Reverse();//逆置
+	void Clear();//清除
+private:
+	Node * m_pHead;
+	Node *m_pTail;
+};
+void List::Clear()
+{
+ /*Node *p=m_pHead;
+	while (p != NULL)
+	{
+		p = p->m_next;
+		DeleteHead();
+	}
+	delete p;
+	p = NULL; */
+		//方法2	
+		Node * p = m_pHead;
+	Node *q = p;
+	while (p != NULL)
+	{
+		p = p->m_next;
+		delete q;
+		q = p;
+	}
+	m_pHead = NULL;
+}
+void List::DeleteHead()
+{
+	if (IsEmpty())
+		return;
+	Node *p = m_pHead;
+	m_pHead = m_pHead->m_next;
+	delete p;
+	p = NULL;
+}
+void List::DeleteTail()
+{
+	if (IsEmpty())
+		return;
+	Node *p = GetIP(GetLength() - 1);
+	if (p == NULL)
+		DeleteHead();
+	else
+	{
+		p->m_next = NULL;
+		delete m_pTail;
+		m_pTail = p;
+	}
+}
+void List::DeleteIvalue(int i)
+{
+	if (IsEmpty())
+		return;
+	if (i == 1)
+		DeleteHead();
+	else if (i == GetLength())
+		DeleteTail();
+	else
+	{
+		Node *p = GetIP(i - 1);
+		Node *f = GetIP(i);
+		p->m_next = f->m_next;
+		delete f;
+		f = NULL;
+	}
+}
+int List::GetLength()
+{
+	Node *p = m_pHead;
+	int n = 0;
+	while (p)
+	{
+		n++;
+		p = p->m_next;
+	}
+	return n;
+}
+Node *List::GetIP(int i)
+{
+	if (i <= 0 || i > GetLength() || GetLength() == 0)
+	{
+		return NULL;
+	}
+	Node *p = m_pHead;
+	while (--i)
+	{
+		p = p->m_next;
+	}
+	return p;
+}
+void List::InsertHead(int v)
+{
+	Node *p = new Node(v);
+	if (m_pHead == NULL)
+	{
+		m_pHead = m_pTail = p;
+	}
+	else
+	{
+		p->m_next = m_pHead;
+		m_pHead = p;
+	}
+}
+void List::InsertTail(int v)
+{
+	Node *p = new Node(v);
+	if (m_pHead == NULL)
+	{
+		m_pHead = m_pTail = p;
+	}
+	else
+	{
+		m_pTail->m_next = p;
+		m_pTail = p;
+	}
+}
+void List::InsertIvalue(int i, int v)
+{
+	if (i == 1)
+		InsertHead(v);
+	else if (i == GetLength() + 1)
+		InsertTail(v);
+	else
+	{
+		Node *pn = new Node(v);
+		Node *pf = GetIP(i - 1);
+		if (pf != NULL)
+		{
+			pn->m_next = pf->m_next;
+			pf->m_next = pn;
+		}
+	}
+}
+void List::Print()
+{
+	Node *p = m_pHead;
+	while (p)
+	{
+		cout << p->m_value << " ";
+		p = p->m_next;
+	}
+	cout << endl;
+}
+void List::Reverse()
+{
+	Node *pf = NULL, *p = NULL, *pn = NULL;
+	if (IsEmpty() || m_pHead->m_next == NULL)
+		return;
+	pf = m_pHead;
+	p = pf->m_next;
+	pf->m_next = NULL;
+	while (p->m_next != NULL)
+	{
+		pn = p->m_next;
+		p->m_next = pf;
+		pf = p;
+		p = pn;
+	}
+	p->m_next = pf;
+	m_pHead = p;
+}
+void List::Sort()
+{
+	Node *p = NULL, *q = NULL;
+	Node *a, *b, *c;
+	if (IsEmpty() || GetLength() == 1)
+		return;
+	for (p = m_pHead; p->m_next != NULL; p = p->m_next)
+	{
+		for (q = m_pHead; q->m_next->m_next != NULL; q = q->m_next)
+		{
+			a = q->m_next;
+			b = a->m_next;
+			c = b->m_next;
+			if (a->m_value>b->m_value)
+			{
+				q->m_next = b;
+				b->m_next = a;
+				a->m_next = c;
+			}
+		}
+	}
+	p = q = m_pHead;
+	int t = 1;
+	while (q->m_next != NULL && p->m_value>q->m_next->m_value)
+	{
+		q = q->m_next;
+		++t;
+	}
+	InsertIvalue(t + 1, p->m_value);
+	m_pHead = p->m_next;
+	delete p;
+	p = NULL;
+
+}
+
+int main() {
+	return 0;
+}
