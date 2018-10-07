@@ -4,185 +4,186 @@ using namespace std;
 template<class T>
 struct ListNode
 {
-	T _data;
-	ListNode<T>* _next;
-	ListNode<T>* _prev;
+    T _data;
+    ListNode<T>* _next;
+    ListNode<T>* _prev;
 
-	ListNode(const T& x = T())
-		:_data(x)
-		, _next(NULL)
-		, _prev(NULL)
-	{}
+    ListNode(const T& x = T())
+            :_data(x)
+            , _next(NULL)
+            , _prev(NULL)
+    {}
 
 };
 
 template<class T>
 class List
 {
-	typedef ListNode<T> Node;
+    typedef ListNode<T> Node;
 public:
-	List()
-	{
-		_head = new Node;
-		_head->_next = _head;
-		_head->_prev = _head;
-	}
+    List()
+    {
+        _head = new Node;
+        _head->_next = _head;
+        _head->_prev = _head;
+    }
 
-	~List()
-	{
-		clear();
-		delete _head;
-		_head = NULL;
-	}
-
-	//删除特定值的p 指向的数
-	void EraseX(const T &x) {
-		Erase(Find(x));
-	}
-
-	//删除任意一个位置的数
-	void Erase(Node* pos)
-	{
-		assert(pos && pos != _head);
-		Node* prev = pos->_prev;
-		Node* next = pos->_next;
-
-		prev->_next = next;
-		next->_prev = prev;
-		delete pos;
-	}
-
-	//任意一个位置插入一个数,在pos的前面插入一个数据
-	void Insert(Node* pos, const T& x)
-	{
-		assert(pos);
-		Node* tmp = new Node(x);
-		Node* cur = pos;
-		Node* prev = cur->_prev;
-
-		prev->_next = tmp;
-		tmp->_prev = prev;
-
-		tmp->_next = cur;
-		cur->_prev = tmp;
-	}
-	//尾部插入一个数
-	void PushBack(const T& x)
-	{
-		Insert(_head, x);
-	}
+    ~List()
+    {
+        clear();
+        delete _head;
+        _head = NULL;
+    }
 
 
-	//尾部删除一个数
-	void PopBack(const T& x)
-	{
-		Erase(_head->_prev);
-	}
+    //删除任意一个位置的数
+    void Erase(Node* pos)
+    {
+        assert(pos && pos != _head);
+        Node* prev = pos->_prev;
+        Node* next = pos->_next;
 
-	//头部插入一个数
-	void PushFront(const T& x)
-	{
-		Insert(_head->_next, x);
-	}
+        prev->_next = next;
+        next->_prev = prev;
+        delete pos;
+    }
 
+    void EraseX(const T &x){
+        Erase(Find(x));
+    }
 
-	//头部删除一个数
-	void PopFront(const T& x)
-	{
-		Erase(_head->_next);
+    //任意一个位置插入一个数,在pos的前面插入一个数据
+    void Insert(Node* pos, const T& x)
+    {
+        assert(pos);
+        Node* tmp = new Node(x);
+        Node* cur = pos;
+        Node* prev = cur->_prev;
 
-	}
+        prev->_next = tmp;
+        tmp->_prev = prev;
 
-	//查找一个数
-	Node* Find(const T& x)
-	{
-		Node* cur = _head->_next;
-		while (cur != _head)
-		{
-			if (cur->_data == x)
-			{
-				return cur;
-			}
-			return NULL;
-		}
-	}
-
-
-	//清除
-	void clear()
-	{
-		Node* cur = _head->_next;
-		while (cur != _head)
-		{
-			Node* next = cur->_next;
-			delete cur;
-			cur = next;
-		}
-		_head->_next = _head;
-		_head->_prev = _head;
-	}
-
-	//打印
-	void Print()
-	{
-		Node* cur = _head->_next;
-		while (cur != _head)
-		{
-			cout << cur->_data << "";
-			cur = cur->_next;
-		}
-		cout << endl;
-	}
+        tmp->_next = cur;
+        cur->_prev = tmp;
+    }
+    //尾部插入一个数
+    void PushBack(const T& x)
+    {
+        Insert(_head, x);
+    }
 
 
-	//拷贝构造函数
-	List(const List<T> & l)
-	{
-		_head = new Node();
-		_head->_next = _head;
-		_head->_prev = _head;
+    //尾部删除一个数
+    void PopBack(const T& x)
+    {
+        Erase(_head->_prev);
+    }
 
-		Node* cur = (l._head)->_next;
-		while (cur != l._head)
-		{
-			this->PushBack(cur->_data);
-			cur = cur->_next;
-		}
-	}
+    //头部插入一个数
+    void PushFront(const T& x)
+    {
+        Insert(_head->_next, x);
+    }
 
-	//赋值运算符重载
-	List<T>& operator=(const List<T>& l)
-	{
-		if (this != &l)
-		{
-			this->clear();
-			Node* cur = l._head->_next;
-			while (cur != l._head)
-			{
-				this->PushBack(cur->_data);
-				cur = cur->_next;
-			}
-		}
-		return *this;
-	}
+
+    //头部删除一个数
+    void PopFront(const T& x)
+    {
+        Erase(_head->_next);
+
+    }
+
+    //查找一个数
+    Node* Find(const T& x)
+    {
+        Node* cur = _head->_next;
+        while (cur != _head)
+        {
+            if (cur->_data == x)
+            {
+                return cur;
+            }
+            cur = cur -> _next;
+
+        }
+        return nullptr;
+    }
+
+
+    //清除
+    void clear()
+    {
+        Node* cur = _head->_next;
+        while (cur != _head)
+        {
+            Node* next = cur->_next;
+            delete cur;
+            cur = next;
+        }
+        _head->_next = _head;
+        _head->_prev = _head;
+    }
+
+    //打印
+    void Print()
+    {
+        Node* cur = _head->_next;
+        while (cur != _head)
+        {
+            cout << cur->_data << endl;
+            cur = cur->_next;
+        }
+        cout << endl;
+    }
+
+
+    //拷贝构造函数
+    List(const List<T> & l)
+    {
+        _head = new Node();
+        _head->_next = _head;
+        _head->_prev = _head;
+
+        Node* cur = (l._head)->_next;
+        while (cur != l._head)
+        {
+            this->PushBack(cur->_data);
+            cur = cur->_next;
+        }
+    }
+
+    //赋值运算符重载
+    List<T>& operator=(const List<T>& l)
+    {
+        if (this != &l)
+        {
+            this->clear();
+            Node* cur = l._head->_next;
+            while (cur != l._head)
+            {
+                this->PushBack(cur->_data);
+                cur = cur->_next;
+            }
+        }
+        return *this;
+    }
 
 
 protected:
-	Node * _head;
+    Node * _head;
 };
 
 int main()
 {
-	List<int> testList;
-	testList.PushBack(2);
-	testList.PushBack(22);
-	testList.PushBack(23);
-	testList.PushBack(42);
-	testList.PushBack(22);
-	testList.Print();
-	cout << "***********************************" << endl;
-	//testList.EraseX(23);
-	testList.Print();
-	system("pause");
-	return 0;
+    List<int> testList;
+    testList.PushBack(2);
+    testList.PushBack(22);
+    testList.PushBack(23);
+    testList.PushBack(42);
+    testList.PushBack(22);
+    testList.Print();
+    cout << "***********************************" << endl;
+    testList.EraseX(23);
+    testList.Print();
+    return 0;
 }
