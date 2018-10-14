@@ -12,8 +12,8 @@ public:
 };
 
 int Calculator::cal(char a, char b, char opt) {
-    int number1 = int(a - '0');
-    int number2 = int(b - '0');
+    int number1 = int(a);
+    int number2 = int(b);
     switch(opt){
         case '+':
             return number1 + number2;
@@ -95,12 +95,15 @@ int Calculator::compute(string s_beh) {
 
   while(s_beh[i] != '\0'){
       if(s_beh[i] <= '9' && '0' <= s_beh[i]){
-        result.push(s_beh[i]);
+        result.push(s_beh[i] - '0');
       }else{
         int temp = result.top();
+        cout << temp << endl;
         result.pop();
         int result_number = cal(temp , result.top() , s_beh[i]);
-        cout << "这是第"  << i << "次运算" << result_number << endl;
+        cout << result.top() <<"  "<< endl;
+        cout << "这是第 "  << i << "次运算" << result_number << endl;
+        cout << "**********************" << endl;
         result.pop();
         result.push(result_number);
       }
