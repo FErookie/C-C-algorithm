@@ -29,46 +29,57 @@ void initMap(){
 
 
 int optertor(string math_string){
-    math_string += '#';
     stack<char> optr;
     stack<int> optd;
     optr.push('#');
-    for(int i = 0 ; i < math_string.length() ; i++){
-        if('0' <= math_string[i] && math_string[i] <= '9'){
+    for(int i = 0 ; i < math_string.length(); i++){
+        if('0' < math_string[i] && math_string[i] < '9'){
             optd.push(math_string[i] - '0');
+            cout << "这是" << i << "push 进来" << math_string[i] << endl;
         }else if(math_string[i] == '(' || math_string[i] == '^' || math_string[i] == '*' || math_string[i] == '/' || math_string[i] == '%' || math_string[i] == '+' || math_string[i] == '-' || math_string[i] == ')' || math_string[i] == '#'){
             if(out_stack[math_string[i]] > inline_stack[optr.top()]){
-                optd.push(math_string[i]);
+                optr.push(math_string[i]);
+                cout << "这是" << i << "push 进来" << math_string[i] << endl;
             }else if(out_stack[math_string[i]] == inline_stack[optr.top()]) {
-                optd.pop();
+                optr.pop();
             }else{
                 int temp = optd.top();
                 optd.pop();
+                cout << "此时进行的计算是 " << optd.top()<< optr.top() << temp << endl;
                 switch (optr.top()){
                     case '+':
                         optd.top() += temp;
+                        optr.pop();
                         break;
                     case '-':
                         optd.top() -= temp;
+                        optr.pop();
                         break;
                     case '*':
                         optd.top() *= temp;
+                        optr.pop();
                         break;
                     case '/':
                         optd.top() /= temp;
+                        optr.pop();
                         break;
                     case '%':
                         optd.top() %= temp;
+                        optr.pop();
                         break;
                     case '^':
                         for(int i = 0 ; i < temp ; i++){
                             optd.top() *= optd.top();
                         }
+                        optr.pop();
                         break;
                     default:
                         break;
                 }
             }
+        }else{
+            cout << "非法字符" << endl;
+            return -99999;
         }
     }
     return optd.top();
@@ -76,7 +87,8 @@ int optertor(string math_string){
 
 
 int main(){
-    cout << optertor("1+2");
+    initMap();
+    cout << optertor("3*(7-2)#");
 
     return 0;
 }
