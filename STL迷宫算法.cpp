@@ -1,12 +1,5 @@
-#include <stdio.h>
+
 #include <iostream>
-#include <cstdlib>
-#include <cmath>
-#include <cctype>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <ctime>
 #include<stack>
 using namespace std;
 typedef struct point
