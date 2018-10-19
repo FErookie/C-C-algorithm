@@ -11,7 +11,7 @@ public:
         link = ptr;
     }
 };
-        
+
 template <class T>
 class Queue{
 public:
@@ -20,7 +20,7 @@ public:
     bool DeQueue();
     bool isEmpty();
     bool isFull();
-    T getFront(T & item);
+    T getFront();
 };
 
 template <class T>
@@ -29,64 +29,70 @@ public:
     int size;
     LinkNode<T> *front;
     LinkNode<T> *rear;
-    
-    LinkQueue(int size){
+    LinkQueue(){
         size = 0;
         front = rear = NULL;
     }
-    
     ~LinkQueue(){
         clear();
     }
-    
     void clear(){
         while(front != NULL){
             rear = front;
-            front = front -> Link;
+            front = front -> link;
             delete rear;
         }
         rear = NULL;
         size = 0;
-    }
-    
+    };
     bool EnQueue(const T item){
         if(rear == NULL){
             front = rear = new LinkNode<T>(item , NULL);
         }else{
-            rear -> next = new LinkNode<T>(item , NULL);            
-            rear = rear -> next;
+            rear -> link = new LinkNode<T>(item , NULL);
+            rear = rear -> link;
         }
         size ++;
         return true;
     }
-    
     bool DeQueue(){
-        LinkNode<T> * temp;
-        if(size == 0) {
+        LinkNode<T> *temp;
+        if(size == 0){
             cout << "队列为空" << endl;
             return false;
         }
         temp = front;
         front = front -> link;
+        delete temp;
         if(front == NULL){
             rear = NULL;
         }
         size --;
         return true;
     }
-    
-    bool getFront(T &item){
+    T getFront(){
         if(size == 0){
-            cout << "这是一个空的链式队列" << endl;
-            return false;
+            cout << "队列为空" << endl;
+            return NULL;
         }
-        item = front -> data;
-        return true;
+        return front -> data;
     }
 };
 
 int main(){
-
-
-    return 0;
+    LinkQueue<int> myQueue;
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    cout << myQueue.size;
+    myQueue.DeQueue();
+    cout << myQueue.size;
+    myQueue.EnQueue(19);
+    myQueue.DeQueue();
+    myQueue.DeQueue();
+    myQueue.DeQueue();
+    myQueue.DeQueue();
+    cout << myQueue.getFront() << endl;
 }
