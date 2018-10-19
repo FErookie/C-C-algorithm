@@ -1,0 +1,86 @@
+
+#include <iostream>
+using namespace std;
+template <class T>
+class Queue{
+public:
+    void clear();
+    bool EnQueue(const T item);
+    bool DeQueue();
+    bool isEmpty();
+    bool isFull();
+    T getFront(T & item);
+};
+
+template <class T>
+class ArrayQueue:public Queue<T>{
+public:
+    int maxsize;
+    int front;
+    int rear;
+    int *queue;
+    bool isFull_flag;
+    ArrayQueue(int size){
+        maxsize = size;
+        queue = new T[maxsize];
+        front = rear = 0;
+        isFull_flag = false;
+    }
+    void clear(){
+        front = rear;
+        isFull_flag = false;
+    }
+    bool isEmpty(){
+        return ((front == rear) && !isFull_flag);
+    }
+    bool isFull(){
+        return ((rear == front) && isFull_flag);
+    }
+    ~ArrayQueue(){
+        delete []queue;
+    }
+    bool EnQueue(const T item){
+        if(isFull()){
+            cout << "此队列已经是满的了" << endl;
+            return false;
+        }
+        queue[rear] = item;
+        rear = (rear + 1) % maxsize;
+
+        if(rear == front){
+            isFull_flag = true;
+        }
+        return true;
+    }
+    bool DeQueue(){
+        if(isEmpty()){
+            cout << "这个队列是空的" << endl;
+            return false;
+        }
+        front = (front + 1) % maxsize;
+
+        if(isFull_flag){
+            isFull_flag = false;
+        }
+        return true;
+    }
+    bool getFront(T & item){
+        if(isEmpty()){
+            return false;
+        }
+        item = queue[front];
+        return true;
+    }
+};
+int main(){
+    ArrayQueue <int> myQueue(5);
+    cout << myQueue.isEmpty();
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    myQueue.EnQueue(1);
+    cout << myQueue.isFull();
+    myQueue.DeQueue();
+    cout << myQueue.isFull();
+}
