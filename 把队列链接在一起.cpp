@@ -84,16 +84,16 @@ int main(){
     int temp = 0;
     cout << "请输入 10 以内的数据 否则将会退出" << endl;
     cin >> temp;
-    while(temp > 0 && temp < 10){
+    while(temp >= 0 && temp < 10){
         queue_list[temp].EnQueue(temp);
         cin >> temp;
     }
-    for(int i = 0 ; i < 9 ; i++){
+    for(int i = 1 ; i < 9 ; i++){
         if(queue_list[i].size == 0){
             continue;
         }
-        LinkNode <int> * temp = queue_list[i+1].rear;
-        queue_list[0].rear -> link = queue_list[i+1].front;
+        LinkNode <int> * temp = queue_list[i].rear;
+        queue_list[0].rear -> link = queue_list[i].front;
         queue_list[0].rear = temp;
     }
     if(queue_list[9].size != 0){
