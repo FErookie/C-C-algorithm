@@ -1,0 +1,10 @@
+﻿  main.cpp
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(150): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(151): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(159): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(167): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(175): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(182): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+e:\杂用\数据结构上机1002\数据结构上机1002\simulater.h(190): warning C4244: “=”: 从“time_t”转换到“long”，可能丢失数据
+  数据结构上机1002.vcxproj -> E:\杂用\数据结构上机1002\Debug\数据结构上机1002.exe
+  数据结构上机1002.vcxproj -> E:\杂用\数据结构上机1002\Debug\数据结构上机1002.pdb (Partial PDB)
