@@ -8,21 +8,21 @@
 #include"Bankwindow.h"
 using namespace std;
 
-class sim										//ÒøĞĞÀà
+class sim										//é“¶è¡Œç±»
 {
 public:
-	queue<nuser> nuqueue;						//ÆÕÍ¨ÕË»§¶ÓÁĞ
-	queue<vuser> vuqueue;						//VIPÕË»§¶ÓÁĞ
-	queue<ouser> ouqueue;						//¶Ô¹«ÕË»§¶ÓÁĞ
-	nwindow nw[3];								//ÆÕÍ¨´°¿Ú
-	vwindow vw;									//VIP´°¿Ú
-	owindow ow;									//¶Ô¹²´°¿Ú
+	queue<nuser> nuqueue;						//æ™®é€šè´¦æˆ·é˜Ÿåˆ—
+	queue<vuser> vuqueue;						//VIPè´¦æˆ·é˜Ÿåˆ—
+	queue<ouser> ouqueue;						//å¯¹å…¬è´¦æˆ·é˜Ÿåˆ—
+	nwindow nw[3];								//æ™®é€šçª—å£
+	vwindow vw;									//VIPçª—å£
+	owindow ow;									//å¯¹å…±çª—å£
 	static int j;
 	static int m;
 	static int g;
-	void userenter();							//ÓÃ»§½øÒøĞĞ
-	void simuserenter();						//Éú³ÉÓÃ»§
-	void calluser();							//·ÖÅä´°¿Ú
+	void userenter();							//ç”¨æˆ·è¿›é“¶è¡Œ
+	void simuserenter();						//ç”Ÿæˆç”¨æˆ·
+	void calluser();							//åˆ†é…çª—å£
 	/*void fu()
 	{
 	j=1;
@@ -43,9 +43,9 @@ void sim::simuserenter()
 	nuser *n;
 	vuser *v;
 	ouser *o;
-	int a = rand() % 10;					//Ëæ»úÉú³É¿Í»§
-	int b = rand() % 3;
-	int c = rand() % 3;
+	int a = 18;					//ç”Ÿæˆå®¢æˆ·
+	int b = 3;
+	int c = 3;
 
 	for (int i = 0; i<a; i++)
 	{
@@ -118,30 +118,30 @@ void sim::userenter()
 	for (i = 0; i<3; i++)
 	{
 		if (nw[i].isbuy == 1)
-			cout << "ÆÕÍ¨" << i + 1 << "´°¿ÚÕıÔÚ·şÎñ" << nw[i].type << nw[i].id << "¹Ë¿Í£¡\n";
+			cout << "æ™®é€š" << i + 1 << "çª—å£æ­£åœ¨æœåŠ¡" << nw[i].type << nw[i].id << "é¡¾å®¢ï¼\n";
 		else
-			cout << "ÆÕÍ¨" << i + 1 << "´°¿Ú¿ÕÏĞ£¡£¡\n";
+			cout << "æ™®é€š" << i + 1 << "çª—å£ç©ºé—²ï¼ï¼\n";
 	}
 	if (vw.isbuy == 1)
-		cout << "VIP´°¿ÚÕıÔÚ·şÎñ" << vw.type << vw.id << "¹Ë¿Í£¡\n";
+		cout << "VIPçª—å£æ­£åœ¨æœåŠ¡" << vw.type << vw.id << "é¡¾å®¢ï¼\n";
 	else
-		cout << "VIP´°¿Ú¿ÕÏĞ£¡£¡\n";
+		cout << "VIPçª—å£ç©ºé—²ï¼ï¼\n";
 	if (ow.isbuy == 1)
-		cout << "¶Ô¹«´°¿ÚÕıÔÚ·şÎñ" << ow.type << ow.id << "¹Ë¿Í£¡\n";
+		cout << "å¯¹å…¬çª—å£æ­£åœ¨æœåŠ¡" << ow.type << ow.id << "é¡¾å®¢ï¼\n";
 	else
-		cout << "¶Ô¹«´°¿Ú¿ÕÏĞ£¡£¡\n";
+		cout << "å¯¹å…¬çª—å£ç©ºé—²ï¼ï¼\n";
 	if (!nuqueue.empty())
-		cout << "ÆÕÍ¨¹Ë¿Í»¹ÓĞ	" << nuqueue.size() << "	ÈËÔÚµÈºò£¡" << endl;
+		cout << "æ™®é€šé¡¾å®¢è¿˜æœ‰	" << nuqueue.size() << "	äººåœ¨ç­‰å€™ï¼" << endl;
 	else
-		cout << "ÆÕÍ¨¹Ë¿ÍÒÑ¾­ÎŞÈËµÈ´ı£¡" << endl;
+		cout << "æ™®é€šé¡¾å®¢å·²ç»æ— äººç­‰å¾…ï¼" << endl;
 	if (!vuqueue.empty())
-		cout << "VIP¹Ë¿Í»¹ÓĞ	" << vuqueue.size() << "	ÈËÔÚµÈºò£¡" << endl;
+		cout << "VIPé¡¾å®¢è¿˜æœ‰	" << vuqueue.size() << "	äººåœ¨ç­‰å€™ï¼" << endl;
 	else
-		cout << "VIP¹Ë¿ÍÒÑ¾­ÎŞÈËµÈ´ı£¡" << endl;
+		cout << "VIPé¡¾å®¢å·²ç»æ— äººç­‰å¾…ï¼" << endl;
 	if (!ouqueue.empty())
-		cout << "¶Ô¹«¹Ë¿Í»¹ÓĞ	" << ouqueue.size() << "	ÈËÔÚµÈºò£¡" << endl;
+		cout << "å¯¹å…¬é¡¾å®¢è¿˜æœ‰	" << ouqueue.size() << "	äººåœ¨ç­‰å€™ï¼" << endl;
 	else
-		cout << "¶Ô¹«¹Ë¿ÍÒÑ¾­ÒÑ¾­ÎŞÈËµÈ´ı£¡" << endl;
+		cout << "å¯¹å…¬é¡¾å®¢å·²ç»å·²ç»æ— äººç­‰å¾…ï¼" << endl;
 }
 void sim::simu()
 {
@@ -151,22 +151,23 @@ void sim::simu()
 	t2 = time(0);
 	while (1)
 	{
-		cout << endl << "ÓªÒµ¿ªÊ¼" << endl;
+		cout << endl << "è¥ä¸šå¼€å§‹" << endl;		
+		handle();
 		calluser();
 		userenter();
 		while (fabs(t2 - t1 - 2)>10e-6)
 		{
 			t2 = time(0);
 		}
-		cout << endl << "µÚ¶şÃë" << endl;
-		simuserenter();
+		cout << endl << "ç¬¬äºŒç§’" << endl;
+		handle();
 		calluser();
 		userenter();
 		while (fabs(t2 - t1 - 4)>10e-6)
 		{
 			t2 = time(0);
 		}
-		cout << endl << "µÚËÄÃë" << endl;
+		cout << endl << "ç¬¬å››ç§’" << endl;
 		handle();
 		calluser();
 		userenter();
@@ -174,14 +175,15 @@ void sim::simu()
 		{
 			t2 = time(0);
 		}
-		cout << endl << "µÚÁùÃë" << endl;
-		simuserenter();
+		cout << endl << "ç¬¬å…­ç§’" << endl;
+		handle();
+		calluser();
 		userenter();
 		while (fabs(t2 - t1 - 8)>10e-6)
 		{
 			t2 = time(0);
 		}
-		cout << endl << "µÚ°ËÃë" << endl;
+		cout << endl << "ç¬¬å…«ç§’" << endl;
 		handle();
 		calluser();
 		userenter();
@@ -189,7 +191,15 @@ void sim::simu()
 		{
 			t2 = time(0);
 		}
-		cout << endl << "ÓªÒµ½áÊø" << endl; 
+		cout << endl << "ç¬¬åç§’" << endl;
+		handle();
+		calluser();
+		userenter();
+		while (fabs(t2 - t1 - 12)>10e-6)
+		{
+			t2 = time(0);
+		}
+		cout << endl << "è¥ä¸šç»“æŸ" << endl; 
 		handle();
 		calluser();
 		userenter();
