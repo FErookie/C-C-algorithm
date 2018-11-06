@@ -66,12 +66,12 @@ void BinarySearchTree::InsertBSTNode(int tempKey)
     while(cur!=NULL)
     {
         pre=cur;
-        if(cur->key>tempKey)//tempKey插到左子树
+        if(cur->key>tempKey)
             cur=cur->leftChild;
-        else cur=cur->rightChild;//插到左子树
+        else cur=cur->rightChild;
     }
     BinarySearchTreeNode *tempNode=new BinarySearchTreeNode(tempKey);
-    if(pre==NULL)//若插入的为根节点
+    if(pre==NULL)
     {
         this->Root=tempNode;
     }
@@ -92,7 +92,7 @@ void BinarySearchTree::UpdataBSTNode(int oldKey,int newKey)
 
 void BinarySearchTree::DeleteNoOrOneChildBSTNode(BinarySearchTreeNode *pre,BinarySearchTreeNode *cur)
 {
-    if(NULL==cur->leftChild&&NULL==cur->rightChild)//左右孩子为空
+    if(NULL==cur->leftChild&&NULL==cur->rightChild)
     {
         if(NULL==pre)
             Root=NULL;
@@ -101,7 +101,7 @@ void BinarySearchTree::DeleteNoOrOneChildBSTNode(BinarySearchTreeNode *pre,Binar
         else pre->rightChild=NULL;
         delete cur;
     }
-    else if(cur->rightChild!=NULL)//若右子树不为空
+    else if(cur->rightChild!=NULL
     {
         if(NULL==pre)
             Root=cur->rightChild;
@@ -111,7 +111,7 @@ void BinarySearchTree::DeleteNoOrOneChildBSTNode(BinarySearchTreeNode *pre,Binar
             pre->rightChild=cur->rightChild;
         delete cur;
     }
-    else if(cur->leftChild!=NULL)//若左子树不为空
+    else if(cur->leftChild!=NULL)
     {
         if(NULL==pre)
             Root=cur->leftChild;
@@ -128,7 +128,7 @@ void BinarySearchTree::DeleteNoOrOneChildBSTNode(BinarySearchTreeNode *pre,Binar
 bool BinarySearchTree::DeleteBSTNode(int tempKey)
 {
     BinarySearchTreeNode *pre=NULL,*cur=Root;
-    while(cur!=NULL)//寻找待删除元素
+    while(cur!=NULL)
     {
         if(cur->key==tempKey)
             break;
@@ -143,9 +143,9 @@ bool BinarySearchTree::DeleteBSTNode(int tempKey)
     if(NULL==cur)return false;
     if(NULL==cur->leftChild||NULL==cur->rightChild)
         DeleteNoOrOneChildBSTNode(pre,cur);
-    else //左右子树都不为空
+    else 
     {
-        BinarySearchTreeNode *rPre=cur,*rCur=cur->rightChild;//找到右子树最小元素
+        BinarySearchTreeNode *rPre=cur,*rCur=cur->rightChild;
         while(rCur->leftChild!=NULL)
         {
             rPre=rCur;
