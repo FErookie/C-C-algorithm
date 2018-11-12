@@ -108,6 +108,7 @@ public:
     void findNone(BinaryTreeNode<T> *root , int &x);
     bool judgeComplete(BinaryTreeNode<T> *root);
     int getHeight(BinaryTreeNode <T> *root);
+    void swapNode(BinaryTreeNode <T> *root);
     void deleteLeaf(BinaryTreeNode<T> *root , BinaryTreeNode <T> *temp);
     void showBigWidthTree(BinaryTreeNode<T> *node);
     void dfsNumsOfDepth(BinaryTreeNode<T> *node, const int depth, int curDepth, int *pnums) ;
@@ -144,6 +145,19 @@ public:
     //后序和中序创建二叉树
 
 };
+template <class T>
+void BinaryTree<T>::swapNode(BinaryTreeNode<T> *root) {
+    if(root == nullptr){
+        return;
+    }else{
+        BinaryTreeNode<T> *temp;
+        temp = root -> getRightChild();
+        root -> setRightChild(root -> getLeftChild());
+        root -> setLeftChild(temp);
+        swapNode(root -> getLeftChild());
+        swapNode(root -> getRightChild());
+    }
+}
 template <class T>
 BinaryTreeNode<T> *BinaryTree<T>::max(BinaryTreeNode<T> *r1, BinaryTreeNode<T> *r2) {
     if(r1 == nullptr){
@@ -200,23 +214,27 @@ void BinaryTree<T>::showBigWidthTree(BinaryTreeNode<T> *node) {
 }
 template <class T>
 void BinaryTree<T>::deleteLeaf(BinaryTreeNode<T> *root, BinaryTreeNode<T> *temp) {
-    if(root == nullptr){
-        return ;
-    }
-    if(root -> getRightChild() == nullptr && root -> getLeftChild() == nullptr){
-        if(temp == nullptr){
-            delete root;
-        }else{
-            delete root;
-            temp -> setLeftChild(nullptr);
-            temp -> setRightChild(nullptr);
+    if (root == NULL) return;
+    if (!root->getLeftChild() && !root->getRightChild())return; //表示是根节点(或者出错，跑到叶子节点了，这种情况应该不会)，不删除
+    if (root->left){
+        if (root->getLeftChild()->getLeftChild() || root->getLeftChild()->getRightChild()) //左子树不是叶子
+             deleteLeaves(root->getLeftChild());
+        else {
+            delete root->left;
+            root->setLeftChild(nullptr); 
         }
-    }else{
-        temp = root;
-        delete(root -> getLeftChild() , temp);
-        delete(root -> getRightChild() , temp);
     }
-}//这个还是有问题的啊..........
+    if (root->getRightChild())
+    {
+        if (root->getRightChild()->getLeftChild() || root->getRightChild()->getRightChild())
+            deleteLeaves(root->right);
+        else //当前节点的右子节点是叶子
+        {
+            delete root->getRightChild();
+            root->setRightChild(nullptr);
+        }
+    }
+}
 template <class T>
 int BinaryTree<T>::getHeight(BinaryTreeNode<T> *root) {
     if(root == nullptr){
@@ -565,5 +583,8 @@ int main() {
     cout << tree.judgeComplete(tree.getRoot()) << endl;
     cout << "\n最大值"<< endl;
     cout << tree.maxNode(tree.getRoot())->getValue() << endl;
+    tree.swapNode(tree.getRoot());
+    cout << "\n交换之后的遍历" << endl;
+    tree.preOrder(tree.getRoot());
     return 0;
 }
