@@ -3,6 +3,8 @@
 #include<queue>
 #include<string>
 using namespace std;
+
+
 template <class T>
 class BinaryTreeNode{
     //friend class BinaryTree<T>;
@@ -20,10 +22,11 @@ public:
     void setRightChild(BinaryTreeNode<T> * r);//设置该结点的右孩子结点
     void createLeftChild();//创建该结点的左孩子结点
     void createRightChild();//创建该结点的右孩子结点
-    T getValue() const;                           //返回该结点的数据值
+    T getValue() const;//返回该结点的数据值
     void setValue(const T& val);                //设置该结点的数据域的值
     bool isLeaf() const;  //判断该结点是否是叶子结点，若是，则返回true
 };
+
 template<class T>
 BinaryTreeNode<T>::BinaryTreeNode()
 {
@@ -99,11 +102,16 @@ public:
     BinaryTree();              				//默认构造函数
     ~BinaryTree();                  		//析构函数
     bool isEmpty() const;           		//判断二叉树是否为空树
+    BinaryTreeNode<T>* maxNode(BinaryTreeNode<T> *root);
     void findOne(BinaryTreeNode<T> *root , int &x);
     void findTwo(BinaryTreeNode<T> *root , int &x);
     void findNone(BinaryTreeNode<T> *root , int &x);
     bool judgeComplete(BinaryTreeNode<T> *root);
     int getHeight(BinaryTreeNode <T> *root);
+    void deleteLeaf(BinaryTreeNode<T> *root , BinaryTreeNode <T> *temp);
+    void showBigWidthTree(BinaryTreeNode<T> *node);
+    void dfsNumsOfDepth(BinaryTreeNode<T> *node, const int depth, int curDepth, int *pnums) ;
+    BinaryTreeNode<T>* max(BinaryTreeNode<T> *r1 , BinaryTreeNode<T> *r2);
     BinaryTreeNode<T> * getRoot() const;	//返回二叉树的根结点
     BinaryTreeNode<T> * getParent(BinaryTreeNode<T> * current) const;
     //返回current结点的父结点
@@ -134,7 +142,81 @@ public:
     void create2(string m,string n);    //输入二叉树的后序和中序
     void inpostcreatetree(BinaryTreeNode<T> *t,string in,string post);
     //后序和中序创建二叉树
+
 };
+template <class T>
+BinaryTreeNode<T> *BinaryTree<T>::max(BinaryTreeNode<T> *r1, BinaryTreeNode<T> *r2) {
+    if(r1 == nullptr){
+        return r2;
+    }
+    if(r2 == nullptr){
+        return r1;
+    }
+    if(r1 -> getValue() > r2 -> getValue()){
+        return r1;
+    }else{
+        return r2;
+    }
+}
+template <class T>
+BinaryTreeNode<T>* BinaryTree<T>::maxNode(BinaryTreeNode<T> *root) {
+    if(root == nullptr){
+        return nullptr;
+    }
+    BinaryTreeNode<T>* left = maxNode(root -> getLeftChild());
+    BinaryTreeNode<T>* right = maxNode(root -> getRightChild());
+    return max(root , max(left , right));
+}
+template <class T>
+void BinaryTree<T>::dfsNumsOfDepth(BinaryTreeNode<T> *node, const int depth, int curDepth, int *pnums) {
+    if (!node || curDepth > depth)
+        return;
+    else if (curDepth < depth) {
+        dfsNumsOfDepth(node->getLeftChild(), depth, curDepth + 1, pnums);
+        dfsNumsOfDepth(node->getRightChild(), depth, curDepth + 1, pnums);
+    }
+    else {
+        (*pnums)++;
+    }
+}
+template <class T>
+void BinaryTree<T>::showBigWidthTree(BinaryTreeNode<T> *node) {
+    int height = getHeight(node);
+    int width = 0, maxWidth = 0, depth = 1;
+
+    for (int i = 1; i <= height; i++)
+    {
+        width = 0;
+        dfsNumsOfDepth(node, i, 1, &width);
+
+        if (width > maxWidth)
+        {
+            maxWidth = width;
+            depth = i;
+        }
+    }
+
+    cout << "max width " << maxWidth << ", his height is " << depth << endl;
+}
+template <class T>
+void BinaryTree<T>::deleteLeaf(BinaryTreeNode<T> *root, BinaryTreeNode<T> *temp) {
+    if(root == nullptr){
+        return ;
+    }
+    if(root -> getRightChild() == nullptr && root -> getLeftChild() == nullptr){
+        if(temp == nullptr){
+            delete root;
+        }else{
+            delete root;
+            temp -> setLeftChild(nullptr);
+            temp -> setRightChild(nullptr);
+        }
+    }else{
+        temp = root;
+        delete(root -> getLeftChild() , temp);
+        delete(root -> getRightChild() , temp);
+    }
+}//这个还是有问题的啊..........
 template <class T>
 int BinaryTree<T>::getHeight(BinaryTreeNode<T> *root) {
     if(root == nullptr){
@@ -475,9 +557,13 @@ int main() {
     x = 0;
     tree.findNone(tree.getRoot() , x);
     cout << x << endl;
-    cout << "树的高度为" << endl;
+    cout << "\n树的高度为" << endl;
     cout << tree.getHeight(tree.getRoot()) << endl;
-    cout << "是不是完全二叉树呢？"<< endl;
+    cout << "\n树的宽度为" << endl;
+    tree.showBigWidthTree(tree.getRoot());
+    cout << "\n是不是完全二叉树呢？"<< endl;
     cout << tree.judgeComplete(tree.getRoot()) << endl;
+    cout << "\n最大值"<< endl;
+    cout << tree.maxNode(tree.getRoot())->getValue() << endl;
     return 0;
 }
