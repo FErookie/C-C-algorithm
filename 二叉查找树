@@ -1,0 +1,83 @@
+#include <iostream>
+using namespace std;
+
+class BinaryNode{
+public:
+    int key;
+    char element;
+    BinaryNode *leftChild;
+    BinaryNode *rightChild;
+    BinaryNode(int x , char value){
+        key = x;
+        value = element;
+        leftChild = nullptr;
+        rightChild = nullptr;
+    };
+};
+
+class BinaryTree{
+public:
+    BinaryNode * root;
+    BinaryTree(){
+        root = nullptr;
+    }
+    ~BinaryTree(){
+        if(root != nullptr){
+            destoryTree(root);
+        }
+    }
+    void insertNode(int key , char element);
+    void destoryTree(BinaryNode * node);
+    void preShow(BinaryNode * node);
+};
+
+void BinaryTree::preShow(BinaryNode *node) {
+    if(node == nullptr){
+        return;
+    }
+    cout << node -> element << "   " << node -> key << endl;
+    preShow(node -> leftChild);
+    preShow(node -> rightChild);
+}
+
+void BinaryTree::insertNode(int key, char element) {
+    BinaryNode * p = root;
+    BinaryNode * prev = nullptr;
+    while(p != nullptr){
+        prev = p;
+        if(p -> key < key){
+            p = p -> rightChild;
+        }else{
+            p= p -> leftChild;
+        }
+    }
+    if(root == nullptr){
+        root = new BinaryNode(key , element);
+    }else if(prev -> key < key){
+        prev -> rightChild = new BinaryNode(key , element);
+    }else{
+        prev -> leftChild = new BinaryNode(key , element);
+    }
+}
+
+void BinaryTree::destoryTree(BinaryNode *node) {
+    if(node == nullptr){
+        return;
+    }
+    destoryTree(node -> leftChild);
+    destoryTree(node -> rightChild);
+    delete node;
+}
+
+int main(){
+    BinaryTree myTree;
+    myTree.insertNode(10 , 'c');
+    myTree.insertNode(102 , 'a');
+    myTree.insertNode(105 , 'd');
+    myTree.insertNode(30 , 'e');
+    myTree.insertNode(101 , 'x');
+    myTree.insertNode(8 , 'z');
+    myTree.preShow(myTree.root);
+    cout << "hello world" << endl;
+    return 0;
+}
